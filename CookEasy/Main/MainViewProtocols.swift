@@ -12,11 +12,14 @@ import UIKit
 protocol MainViewViewProtocol: class {
     // PRESENTER -> VIEW
     var presenter: MainViewPresenterProtocol? { get set }
+    func presenterPushDataView(received: [ArkaElement])
 }
 
 protocol MainViewWireFrameProtocol: class {
     // PRESENTER -> WIREFRAME
     static func createMainViewModule() -> UIViewController
+    func presentNewViewDetail(from view: MainViewViewProtocol, withData: ArkaElement )
+
 }
 
 protocol MainViewPresenterProtocol: class {
@@ -26,10 +29,12 @@ protocol MainViewPresenterProtocol: class {
     var wireFrame: MainViewWireFrameProtocol? { get set }
     
     func viewDidLoad()
+    func showDetailView(with data: ArkaElement)
 }
 
 protocol MainViewInteractorOutputProtocol: class {
 // INTERACTOR -> PRESENTER
+    func interPushDataPresenter(receivedData: [ArkaElement])
 }
 
 protocol MainViewInteractorInputProtocol: class {
@@ -37,6 +42,8 @@ protocol MainViewInteractorInputProtocol: class {
     var presenter: MainViewInteractorOutputProtocol? { get set }
     var localDatamanager: MainViewLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: MainViewRemoteDataManagerInputProtocol? { get set }
+    
+    func getData() 
 }
 
 protocol MainViewDataManagerInputProtocol: class {
@@ -46,10 +53,13 @@ protocol MainViewDataManagerInputProtocol: class {
 protocol MainViewRemoteDataManagerInputProtocol: class {
     // INTERACTOR -> REMOTEDATAMANAGER
     var remoteRequestHandler: MainViewRemoteDataManagerOutputProtocol? { get set }
+    func externalGetData()
+    
 }
 
 protocol MainViewRemoteDataManagerOutputProtocol: class {
     // REMOTEDATAMANAGER -> INTERACTOR
+    func remoteDataManagerCallBackData(with Arka: [ArkaElement])
 }
 
 protocol MainViewLocalDataManagerInputProtocol: class {

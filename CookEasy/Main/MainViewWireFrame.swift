@@ -12,8 +12,8 @@ import UIKit
 class MainViewWireFrame: MainViewWireFrameProtocol {
 
     class func createMainViewModule() -> UIViewController {
-        let navController = mainStoryboard.instantiateViewController(withIdentifier: "MainViewView")
-        if let view = navController  as? MainViewView {
+        let navController = mainStoryboard.instantiateViewController(withIdentifier: "navigation")
+        if let view = navController.children.first as? MainViewView {
             let presenter: MainViewPresenterProtocol & MainViewInteractorOutputProtocol = MainViewPresenter()
             let interactor: MainViewInteractorInputProtocol & MainViewRemoteDataManagerOutputProtocol = MainViewInteractor()
             let localDataManager: MainViewLocalDataManagerInputProtocol = MainViewLocalDataManager()
@@ -36,6 +36,15 @@ class MainViewWireFrame: MainViewWireFrameProtocol {
     
     static var mainStoryboard: UIStoryboard {
         return UIStoryboard(name: "MainViewView", bundle: Bundle.main)
+    }
+    
+    func presentNewViewDetail(from view: MainViewViewProtocol, withData: ArkaElement) {
+        //crear nuevo modulo y llamado
+        let newDetailView = DetailsRecipeWireFrame.createDetailsRecipeModule(with: withData)
+        //createDetailModule(with: withData)
+        if let newView =  view as? UIViewController{
+            newView.navigationController?.pushViewController(newDetailView, animated: true)
+        }
     }
     
 }
